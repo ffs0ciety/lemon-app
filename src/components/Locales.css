@@ -1,0 +1,96 @@
+body {
+  background: #111;
+    font-family: "Lato", sans-serif;
+  }
+  
+  .lateralNav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .lateralNav p {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .lateralNav p:hover {
+    color: #969696;
+  }
+  
+  .lateralNav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .lateralNav {padding-top: 15px;}
+    .lateralNav a {font-size: 18px;}
+  }
+
+.contenedor{
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    text-align: center;
+}
+ 
+.mask{  
+  -webkit-mask-image: linear-gradient(to top, transparent 10%, black 60%);
+  mask-image: linear-gradient(to top, transparent 10%, black 60%);
+  
+}
+
+.texto-encima{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.centrado{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#botonLocales {
+  position: fixed;
+  border-style: solid;
+  border-color: black;
+  top: 15%;
+  left: 80%;
+  z-index: 2;
+  background: rgba(255,255,255,1);
+  background-size: 300px 100px;
+}
+
+
+#botonLista {
+  border-style: solid;
+  border-color: black;
+  background: rgba(255,255,255,1);
+  background-size: 300px 100px;
+}
+
+.verticalDivider{
+  border-left:1px solid #38546d; 
+  border-right:1px solid #16222c; 
+  height:80px;
+  position:absolute;
+  right:249px;
+  top:10px; 
+}
