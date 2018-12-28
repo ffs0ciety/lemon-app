@@ -2,9 +2,9 @@ const Local = require('../models/local');
 
 const localCtrl = {};
 
-localCtrl.getLocals = async (req, res) => {
-    const locals = await Local.find();
-    res.json(locals);
+localCtrl.getLocales = async (req, res) => {
+    const locales = await Local.find();
+    res.json(locales);
 }
 
 localCtrl.createLocal = async (req, res) => {

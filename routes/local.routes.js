@@ -3,7 +3,7 @@ const router = express.Router();
 
 const localCtrl = require('../controllers/local.controller');
 
-router.get('/' , localCtrl.getLocals);
+router.get('/' , localCtrl.getLocales);
 router.post('/' , localCtrl.createLocal);
 router.get('/:id' , localCtrl.getLocal);
 router.put('/:id' , localCtrl.editLocal);

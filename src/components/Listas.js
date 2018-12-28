@@ -1,8 +1,8 @@
 import React from 'react';
-import './Test.css'
+import './Listas.css'
 //import {Popover, Button, Modal, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-class Test extends React.Component {
+class Listas extends React.Component {
   constructor() {
     super();
 
@@ -115,4 +115,4 @@ render() {
   }
 }
 
-export default Test;
+export default Listas;

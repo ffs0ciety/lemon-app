@@ -23,7 +23,7 @@ app.use(cors({origin: 'http://localhost:4200'}));
 app.use('/api/employees',require('./routes/employee.routes'));
 app.use('/api/locales',require('./routes/local.routes'));
 app.use('/api/listaLocal',require('./routes/listaLocal.routes'));
-app.use('/api/accounts',require('./routes/account.routes'));
+app.use('/api/usuarios',require('./routes/usuarios.routes'));
 
 app.get('/*', (req, res) => {
     res.sendFile(__dirname+'/public/index.html', function(err) {

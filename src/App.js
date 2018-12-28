@@ -11,10 +11,8 @@ import AppRouter from './components/AppRouter';
 
 class App extends Component {
   render() {
-    return (
-      
+    return (  
       <div className="App">
-      <h1>test</h1>
       <AppRouter />
       </div>
     );
