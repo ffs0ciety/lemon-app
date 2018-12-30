@@ -13,57 +13,68 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validarCuenta = this.validarCuenta.bind(this);
+    this.registrarCuenta = this.registrarCuenta.bind(this);
    // this.handleSubmit = this.handleSubmit.bind(this);
     
   }
 
 
-  validarCuenta(e){
-    e.preventDefault()
-    // fetch(`/api/accounts/validate`)
-    //   .then(
-    //     res => {
-    //       res.json();
-    //       console.log(res);
-    //     })
+  componentDidMount() {
+    // fetch('/api/locales')
+    //   .then(res => res.json())
     //   .then(data => {
-    //       console.log(data);
-    //     });
-    console.log(JSON.stringify(this.state));
-    fetch('/api/accounts/validate', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+    //     console.log()
+    //     //this.setState({locales: data});
+    //   });
+  }
+
+  validarCuenta(e){
+    e.preventDefault();
+ 
+
+    fetch('/api/usuarios/validate',{
+    method: 'POST',
+    body: JSON.stringify(this.state),
+    headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+      })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);    
+      alert(data);  
     })
+    .catch(err => console.error(err));
+         
+          
+    
+  }
+  registrarCuenta(e){
+    e.preventDefault();
+ 
+
+    if((this.state.mail !="") && (this.state.name !="") && (this.state.password !="")){
+        fetch('/api/usuarios',{
+        method: 'POST',
+        body: JSON.stringify(this.state),
+        headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+      })
       .then(res => res.json())
       .then(data => {
-        // RETOCAR
-        if(data.status == 'false'){
-          console.log('mee');
-        }
-        else {
-          console.log(data[0]);
-          sessionStorage.setItem("account",data[0].name);
-          //location.reload();
-        }
+        console.log(data);    
+        alert(data.status);
+        if(data.status == "Usuario registrado con exito!"){
+          window.location.reload(); 
+        }     
       })
       .catch(err => console.error(err));
-  }
-
-
-  componentDidMount() {
-    //this.fetchLocales() 
-  }
-
-  validateAccount() {
-    fetch('/api/locales')
-      .then(res => res.json())
-      .then(data => {
-        this.setState({locales: data});
-      });
+         
+          
+    } else alert("Falta algún campo por rellenar");
   }
 
 
@@ -74,14 +85,6 @@ class Login extends React.Component {
     });
   }
 
-  // validarCuenta(){
-  //   fetch('/api/locales')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //     });
-  // }
-
   
 
 render() {
@@ -90,10 +93,15 @@ render() {
         <div className="row">
             <div className="col-sm-5">
         
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" className="form-control" name="mail" aria-describedby="emailHelp" placeholder="Enter email"onChange={this.handleChange}></input>
-                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                <div>
+                    <label>Nombre</label>
+                    <input type="text" className="form-control" name="name" aria-describedby="emailHelp" placeholder="Enter name"onChange={this.handleChange}></input>
+                </div>
+                <small id="emailHelp" className="form-text text-muted">El nombre solo es necesario en caso de registro</small>
+                <hr></hr>
+                <div>
+                    <label>Email</label>
+                    <input type="email" className="form-control" name="mail" aria-describedby="emailHelp" placeholder="Enter email"onChange={this.handleChange}></input> 
                 </div>
                 <div>
                     <label >Password</label>
@@ -103,7 +111,11 @@ render() {
                     <input type="checkbox" className="form-check-input" id="exampleCheck1"></input>
                     <label className="form-check-label" >Check me out</label>
                 </div>
-                <button onClick={this.validarCuenta} className="btn btn-primary">Submit</button>
+                
+                  <button onClick={this.validarCuenta} className="btn btn-outline-primary" style={{marginRight:30}}>Iniciar sesion</button>
+                  <button onClick={this.registrarCuenta} className="btn btn-outline-secondary">Registrarse</button>
+                
+               
             </div>
         </div>
     </div>

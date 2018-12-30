@@ -55,7 +55,7 @@ class AppRouter extends React.Component {
                         <Link to=""><li><i className="material-icons">account_balance</i></li></Link>
                         <Link to="/locales"><li>Locales</li></Link>
                         <Link to="/listas"><li>Listas</li></Link>
-                        <Link to="/devs"><li>Devs</li></Link>
+                        {/* <Link to="/devs"><li>Devs</li></Link> */}
                         <Link to="/login"><li id="sesion"><i className="material-icons">account_circle</i></li>{sessionStorage.account}</Link>    
                         {/* <li href="javascript:void(0);" className="icon" onClick= {() => this.myFunction()}>
                         <i className="material-icons">reorder</i>
