@@ -4,6 +4,7 @@ const router = express.Router();
 const usuariosCtrl = require('../controllers/usuarios.controller');
 
 router.get('/' , usuariosCtrl.getUsuarios);
+router.post('/getidSala' , usuariosCtrl.getIdSala);
 router.post('/' , usuariosCtrl.createUsuario);
 router.post('/validate' , usuariosCtrl.validateUsuario);
 router.put('/:id' , usuariosCtrl.editUsuario);

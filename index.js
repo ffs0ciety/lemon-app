@@ -4,6 +4,7 @@ const app = express();
 const {mongoose} = require('./database');
 const cors = require('cors');
 var path = require('path');
+var service = require('./services');
 
 // Static files
 //app.use(express.static(__dirname + 'public'));
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Middlewares
 app.use(morgan('dev'));
 app.use(cors({origin: 'http://localhost:4200'}));
+app.use('/api/validate', require('./routes/services.routes'));
 
 // Routes
 app.use('/api/employees',require('./routes/employee.routes'));

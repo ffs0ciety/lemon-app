@@ -11,6 +11,7 @@ listaLocalCtrl.addListaLocal = async (req, res) => {
     const listaLocal = new ListaLocal({
         nameLocal : req.body.nameLocal,
         fecha : req.body.fecha,
+        idSala: req.body.idSala,
         userName : req.body.userName,
         age : req.body.age
     });
@@ -18,10 +19,10 @@ listaLocalCtrl.addListaLocal = async (req, res) => {
     res.json({'status': 'ListaLocal Saved'});
 }
 
-listaLocalCtrl.getListaLocalNombre = async (req, res) => {
-    // const listaLocal = await ListaLocal.findById(req.params.id);
+listaLocalCtrl.getListaLocalId = async (req, res) => {
+    const listaLocal = await ListaLocal.find({idSala:req.params.id});
     console.log(req.params);
-    const listaLocal = await ListaLocal.find({nameLocal:req.params.id});
+    //const listaLocal = await ListaLocal.find({nameLocal:req.params.id});
     
     res.json(listaLocal);
 }

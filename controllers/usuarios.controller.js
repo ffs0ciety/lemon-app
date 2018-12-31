@@ -1,22 +1,30 @@
 const Usuarios = require('../models/usuarios');
+const service = require('../services');
 
 const usuariosCtrl = {};
 
 usuariosCtrl.validateUsuario = async (req, res) => {
     const usuario = new Usuarios(req.body);
     const mail = await Usuarios.find({$and:[{mail:usuario.mail},{password:usuario.password}]});
-    const name = await Usuarios.find({$and:[{name:usuario.name},{password:usuario.password}]});
-    console.log(req.body);
-    if((mail.length != 0 || name.length != 0)){
-        
-        res.json("Loggeado con éxito");
+    // const name = await Usuarios.find({$and:[{name:usuario.name},{password:usuario.password}]});
+    
+    if(mail.length != 0){
+        res.send({token: service.createToken(mail[0])});
+        //res.json(service.createToken(usuario.mail));
     }
-    else res.json("Usuario o contraseña incorrecto");
+    else res.send({token:""});
 }
 
 usuariosCtrl.getUsuarios = async (req, res) => {
     const usuarios = await Usuarios.find();
     res.json(usuarios);
+}
+
+usuariosCtrl.getIdSala = async (req, res) => {
+    const usuario = new Usuarios(req.body);
+    const salida = await Usuarios.find({mail:usuario.mail},{idSala:1,_id:0});
+    
+    res.json(salida);
 }
 
 usuariosCtrl.createUsuario = async (req, res) => {

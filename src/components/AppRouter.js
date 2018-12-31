@@ -18,13 +18,28 @@ class AppRouter extends React.Component {
     constructor() {
       super();
       this.state = {
-
+        name: 'Error',
+        other: 'aa'
       }
     }
 
     componentDidMount(){
+        //console.log(sessionStorage.getItem('token'));
+        // var privateElement = document.getElementsByClassName('private')[0];
+        // privateElement.style.display = "inline";
+        
+        this.comprobarToken();
         this.reStyle();
         window.onscroll = () => this.reStyle();
+
+        
+    }
+
+    mostrarPrivates(){
+        if(this.state.name != "Error"){
+            var privateElement = document.getElementsByClassName('private')[0];
+            privateElement.style.display = "inline";    
+        }
     }
 
     myFunction() {
@@ -34,6 +49,27 @@ class AppRouter extends React.Component {
         } else {
           x.className = "topnav";
         }
+    }
+
+    comprobarToken(){        
+        var datos = {token:sessionStorage.token};
+        var salida = fetch('/api/validate',{
+            method: 'POST',
+            body: JSON.stringify(datos),
+            headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  }
+              })
+            .then(res => res.json())
+            .then(data => {
+              this.setState({
+                  name:data.status
+              })
+              this.mostrarPrivates();
+            })
+            .catch(err => console.error(err));
+        
     }
 
     reStyle(){
@@ -54,7 +90,7 @@ class AppRouter extends React.Component {
                     <ul>
                         <Link to=""><li><i className="material-icons">account_balance</i></li></Link>
                         <Link to="/locales"><li>Locales</li></Link>
-                        <Link to="/listas"><li>Listas</li></Link>
+                        <Link to="/listas" className="private"><li >Listas</li></Link>
                         {/* <Link to="/devs"><li>Devs</li></Link> */}
                         <Link to="/login"><li id="sesion"><i className="material-icons">account_circle</i></li>{sessionStorage.account}</Link>    
                         {/* <li href="javascript:void(0);" className="icon" onClick= {() => this.myFunction()}>
@@ -63,7 +99,7 @@ class AppRouter extends React.Component {
                     </ul>
                     
                     </div>    
-                <Route path="" exact component={RoutePresentacion} />                 
+                <Route path="" exact component={RoutePresentacion} />                      
                 <Route path="/locales" exact component={RouteLocales} />
                 <Route path="/listas" exact component={RouteListas} />
                 <Route path="/devs" exact component={RouteDevs} />

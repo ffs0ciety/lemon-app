@@ -19,6 +19,7 @@ class Locales extends Component {
     this.dataSubmit = {
       _id:'',
       nameLocal: '',
+      idSala:'',
       fecha: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
       userName: '',
       age: ''
@@ -41,18 +42,16 @@ class Locales extends Component {
 
   handleSubmit(e) {
     event.preventDefault();
-    console.log("submit")
     const { name, value } = e.target;
     if(name == 'userName' ){
       this.dataSubmit.userName = value;
     }
     else this.dataSubmit.age = value;
-    console.log(this.state);
-    console.log(this.dataSubmit);
     
   }
 
   addLista() {
+    
     fetch('/api/listaLocal',{
       method: 'POST',
       body: JSON.stringify(this.dataSubmit),
@@ -64,7 +63,6 @@ class Locales extends Component {
     .then(res => res.json())
         .then(data => {
           console.log(data);
-          window.M.toast({html: 'User Saved'});
         //  this.setState({title: '', description: ''});
           //this.fetchLocales();
         })
@@ -83,8 +81,8 @@ class Locales extends Component {
           infoLocal: data.infoLocal,
           _id: data._id
         });
-        console.log(this.state);
         this.dataSubmit.nameLocal = this.state.name;
+        this.dataSubmit.idSala = this.state._id;
         
       })
       

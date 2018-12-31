@@ -14,7 +14,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.validarCuenta = this.validarCuenta.bind(this);
     this.registrarCuenta = this.registrarCuenta.bind(this);
-   // this.handleSubmit = this.handleSubmit.bind(this);
+   
     
   }
 
@@ -30,8 +30,6 @@ class Login extends React.Component {
 
   validarCuenta(e){
     e.preventDefault();
- 
-
     fetch('/api/usuarios/validate',{
     method: 'POST',
     body: JSON.stringify(this.state),
@@ -42,8 +40,15 @@ class Login extends React.Component {
       })
     .then(res => res.json())
     .then(data => {
-      console.log(data);    
-      alert(data);  
+      if(data.token == ""){
+        alert("Usuario o contraseña incorrectos");
+      }
+      else 
+      {
+        sessionStorage.setItem('token', data.token);
+        alert("Usuario loggeado con éxito");
+        window.location.reload(); 
+      }
     })
     .catch(err => console.error(err));
          

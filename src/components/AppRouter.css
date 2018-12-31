@@ -50,3 +50,7 @@
       text-align: left;
     }
   }
+
+  .private{
+    display: none;
+  }
