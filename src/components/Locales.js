@@ -7,7 +7,6 @@ class Locales extends Component {
 
   constructor() {
     super();
-
     this.state = {
       name: '',
       imgPrincipal: '',
@@ -16,11 +15,12 @@ class Locales extends Component {
       locales: [],      
     };
     
+
     this.dataSubmit = {
       _id:'',
       nameLocal: '',
       idSala:'',
-      fecha: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
+      fecha: new Date().toJSON(),
       userName: '',
       age: ''
     }
@@ -52,11 +52,14 @@ class Locales extends Component {
 
   componentDidMount() {
     this.fetchLocales();
+    this.dataSubmit.userName = sessionStorage.name;
+    this.dataSubmit.age = 20;
+    const event = new Date;
+    console.log(event);
   }
 
 
   addLista() {
-    
     fetch('/api/listaLocal',{
       method: 'POST',
       body: JSON.stringify(this.dataSubmit),
@@ -68,8 +71,7 @@ class Locales extends Component {
     .then(res => res.json())
         .then(data => {
           console.log(data);
-        //  this.setState({title: '', description: ''});
-          //this.fetchLocales();
+          alert(data.status);
         })
         .catch(err => console.error(err));
   }
@@ -213,13 +215,11 @@ class Locales extends Component {
             </div>
           
 
-              
-
           <div id="myModal" className="modal" tabIndex="-1" role="dialog">
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">Modal title</h5>
+                  <h5 className="modal-title">Listas</h5>
                   <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => this.closeModal()}>
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -227,13 +227,9 @@ class Locales extends Component {
                 <div className="modal-body">
                 <form>
                   <label>
-                    Name:
-                    <input type="text" name="userName" onChange={this.handleSubmit}/>
-                  </label>  
-                  <label>
-                    Age:
-                    <input type="number" name="age" onChange={this.handleSubmit}/>
-                  </label>       
+                    Dia de la semana "pruebas":
+                    <input type="text" name="none" onChange={this.handleSubmit}/>
+                  </label>   
                 </form>
                 </div>
                 <div className="modal-footer">
@@ -243,11 +239,7 @@ class Locales extends Component {
               </div>
             </div>
           </div>
-          
-   
 
-          
-         
         </div>      
       )
     }
