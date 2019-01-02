@@ -1,24 +1,14 @@
 import React from 'react';
 import './Listas.css'
 import Error from './Error';
-//import {Popover, Button, Modal, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
 class Listas extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      mailLocal: '',
-      idSala:'',
-      name: '',
-      imgPrincipal: '',
-      _id: '',
-      locales: [],  
       lista: []    
     };
-    
-
-
 
     this.handleChange = this.handleChange.bind(this);
 
@@ -32,65 +22,32 @@ class Listas extends React.Component {
   }
 
   componentDidMount() {
-    this.comprobarToken();
+    this.getListaLocal();
   }
 
 
-  comprobarToken(){        
-    var datos = {token:sessionStorage.token};
-    fetch('/api/validate',{
-        method: 'POST',
-        body: JSON.stringify(datos),
-        headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              }
-          })
-        .then(res => res.json())
-        .then(data => {
-          this.setState({
-              mailLocal:data.status
-          })
-          this.getIdSala();
-        })
-        .catch(err => console.error(err));
+
+  getListaLocal() {
     
-}
-
-getIdSala(){
-  console.log(this.state);
-  fetch('/api/usuarios/getidsala',{
-    method: 'POST',
-    body: JSON.stringify({
-      "mail":this.state.mailLocal}),
-    headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
+    fetch(`/api/listaLocal/lista`,{
+      method: 'POST',
+      body: JSON.stringify({mail:sessionStorage.mail, idSala:sessionStorage.idSala}),
+      headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + sessionStorage.token
+            }
+        
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.setState({
+          lista:data
+        })     
+        
       })
-     .then(res => res.json())
-     .then(data => {
-       this.setState({
-         idSala:data[0].idSala
-       })
-      this.getListaLocal();
-    })
-    // .catch(err => console.error(err));
-}
-
-
-getListaLocal() {
-  
-  fetch(`/api/listaLocal/${this.state.idSala}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      this.setState({
-        lista:data
-      })     
-      console.log(data);
-    })
-}
+  }
 
 
 render() {
@@ -98,38 +55,6 @@ render() {
 
     return (
       <div id="cuerpo" className="container">
-        {/* <div className="container">
-          <form>
-            <h3>Busqueda por local:</h3>
-            <select id="selectBox" className="form-control form-control-lg">
-            { 
-              this.state.locales.map(local => {
-                return (
-                  <option key={local._id} onChange={() => this.getLocal(local._id)}>
-                    {local.name}           
-                  </option>
-                )
-              })
-            }      
-            </select>
-          </form>
-          <button onClick={() => this.getListaLocal()}>Buscar</button>
-          <ul className="list-unstyled">
-          { 
-              this.state.lista.map(persona => {
-                return (
-                  <li key={persona._id}>
-                    {persona.userName}           
-                  </li>
-                )
-              })
-            } 
-            </ul>   
-            
-            
-        </div>
-         */}
-
       <table className="table">
         <thead>
         <tr>

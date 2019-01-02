@@ -17,10 +17,7 @@ class AppRouter extends React.Component {
 
     constructor() {
       super();
-      this.state = {
-        name: 'Error',
-        other: 'aa'
-      }
+      
     }
 
     componentDidMount(){
@@ -30,15 +27,13 @@ class AppRouter extends React.Component {
         
         this.comprobarToken();
         this.reStyle();
-        window.onscroll = () => this.reStyle();
-
-        
+        window.onscroll = () => this.reStyle();    
     }
 
     mostrarPrivates(){
-        if(this.state.name != "Error"){
+        if(sessionStorage.idSala != ""){
             var privateElement = document.getElementsByClassName('private')[0];
-            privateElement.style.display = "inline";    
+            privateElement.style.display = "inline";
         }
     }
 
@@ -52,21 +47,30 @@ class AppRouter extends React.Component {
     }
 
     comprobarToken(){        
-        var datos = {token:sessionStorage.token};
-        var salida = fetch('/api/validate',{
+    fetch('/api/usuarios/usuario',{
             method: 'POST',
-            body: JSON.stringify(datos),
+            body: JSON.stringify({mail:sessionStorage.mail}),
             headers: {
+
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + sessionStorage.token
+                    
                   }
               })
             .then(res => res.json())
             .then(data => {
-              this.setState({
-                  name:data.status
-              })
-              this.mostrarPrivates();
+                //COMPROBAR ESTA MONSERGA DEL ESTAdO EMPTY
+            console.log(data);
+            if(data.status != "Token error"){
+
+                sessionStorage.setItem('idSala', data[0].idSala);
+                sessionStorage.setItem('userId', data[0]._id);
+                sessionStorage.setItem('name', data[0].name);
+                
+                this.mostrarPrivates();
+            } 
+
             })
             .catch(err => console.error(err));
         
@@ -92,7 +96,7 @@ class AppRouter extends React.Component {
                         <Link to="/locales"><li>Locales</li></Link>
                         <Link to="/listas" className="private"><li >Listas</li></Link>
                         {/* <Link to="/devs"><li>Devs</li></Link> */}
-                        <Link to="/login"><li id="sesion"><i className="material-icons">account_circle</i></li>{sessionStorage.account}</Link>    
+                        <Link to="/login"><li id="sesion"><i className="material-icons">account_circle</i></li></Link>    
                         {/* <li href="javascript:void(0);" className="icon" onClick= {() => this.myFunction()}>
                         <i className="material-icons">reorder</i>
                         </li> */}

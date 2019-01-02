@@ -50,6 +50,11 @@ class Locales extends Component {
     
   }
 
+  componentDidMount() {
+    this.fetchLocales();
+  }
+
+
   addLista() {
     
     fetch('/api/listaLocal',{
@@ -81,17 +86,11 @@ class Locales extends Component {
           infoLocal: data.infoLocal,
           _id: data._id
         });
+    
         this.dataSubmit.nameLocal = this.state.name;
         this.dataSubmit.idSala = this.state._id;
         
-      })
-      
-      
-  }
-
-  componentDidMount() {
-    console.log(sessionStorage.account);
-    this.fetchLocales() ;
+      })   
   }
 
   fetchLocales() {
@@ -99,12 +98,12 @@ class Locales extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({locales: data});
+        console.log(this.state.locales);
       });
   }
 
   closeNav(){
     document.getElementById("mySidenav").style.width = "0";
-    //document.getElementById("main").style.marginLeft= "0";
     document.body.style.backgroundColor = "white";
 
     if(document.getElementById("image") != null){
@@ -114,10 +113,6 @@ class Locales extends Component {
 
 
   openNav(){
-    window.sessionStorage.setItem("local","mana");
-    console.log(window.sessionStorage);
-    
-    console.log("open");
     document.getElementById("mySidenav").style.width = "250px";
     document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
     if(document.getElementById("image") != null){

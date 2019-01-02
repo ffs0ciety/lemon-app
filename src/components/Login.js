@@ -20,12 +20,9 @@ class Login extends React.Component {
 
 
   componentDidMount() {
-    // fetch('/api/locales')
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log()
-    //     //this.setState({locales: data});
-    //   });
+
+
+    // this.comprobarToken();
   }
 
   validarCuenta(e){
@@ -46,8 +43,10 @@ class Login extends React.Component {
       else 
       {
         sessionStorage.setItem('token', data.token);
-        alert("Usuario loggeado con éxito");
+        console.log(this.state.mail);
+        sessionStorage.setItem('mail', this.state.mail);      
         window.location.reload(); 
+        alert("Usuario loggeado con éxito");
       }
     })
     .catch(err => console.error(err));
@@ -57,8 +56,6 @@ class Login extends React.Component {
   }
   registrarCuenta(e){
     e.preventDefault();
- 
-
     if((this.state.mail !="") && (this.state.name !="") && (this.state.password !="")){
         fetch('/api/usuarios',{
         method: 'POST',
@@ -90,10 +87,29 @@ class Login extends React.Component {
     });
   }
 
-  
+
+
+
+  cerrarSesion(){
+    sessionStorage.clear();
+    window.location.reload(); 
+  }
+    
 
 render() {
-  return (
+  if(sessionStorage.token != undefined){
+    return (
+      <div id="cuerpo">
+        <div className="container">
+            <h2>Usuario <b>{sessionStorage.mail}</b> loggeado</h2>
+
+            <button className="btn btn-outline-primary" onClick={this.cerrarSesion}>Cerrar sesion</button>
+        </div>
+      </div>
+    )
+  }
+
+  else return (
     <div id="cuerpo" className="container">
         <div className="row">
             <div className="col-sm-5">

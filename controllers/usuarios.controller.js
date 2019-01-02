@@ -10,7 +10,6 @@ usuariosCtrl.validateUsuario = async (req, res) => {
     
     if(mail.length != 0){
         res.send({token: service.createToken(mail[0])});
-        //res.json(service.createToken(usuario.mail));
     }
     else res.send({token:""});
 }
@@ -20,11 +19,18 @@ usuariosCtrl.getUsuarios = async (req, res) => {
     res.json(usuarios);
 }
 
-usuariosCtrl.getIdSala = async (req, res) => {
+usuariosCtrl.getUsuarioPublic = async (req, res) => {
     const usuario = new Usuarios(req.body);
-    const salida = await Usuarios.find({mail:usuario.mail},{idSala:1,_id:0});
-    
-    res.json(salida);
+    //COMPROBAMOS QUE LOS DATOS DEL TOKEN COINCIDAN CON EL BODY
+    if(req.user.mail == usuario.mail){
+       const salida = await Usuarios.find({mail:usuario.mail},{password:0});
+       res.json(salida);
+    }
+    else {
+        const salida = {status:"Token error"}
+        res.json(salida);
+    };
+
 }
 
 usuariosCtrl.createUsuario = async (req, res) => {

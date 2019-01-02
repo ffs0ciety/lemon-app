@@ -1,4 +1,5 @@
 const ListaLocal = require('../models/listaLocal');
+const Usuarios = require('../models/usuarios');
 
 const listaLocalCtrl = {};
 
@@ -20,11 +21,19 @@ listaLocalCtrl.addListaLocal = async (req, res) => {
 }
 
 listaLocalCtrl.getListaLocalId = async (req, res) => {
-    const listaLocal = await ListaLocal.find({idSala:req.params.id});
-    console.log(req.params);
-    //const listaLocal = await ListaLocal.find({nameLocal:req.params.id});
+  
     
-    res.json(listaLocal);
+    const usuario = new Usuarios(req.body);
+    if(req.user.mail == usuario.mail){
+       const listaLocal = await ListaLocal.find({idSala:req.body.idSala});
+       console.log(req.params.idSala);
+       //const listaLocal = await ListaLocal.find({nameLocal:req.params.id});
+       res.json(listaLocal);
+    }
+    else {
+        const salida = {status:"Token error"}
+        res.json(salida);
+    };
 }
 
 // listaLocalCtrl.editListaLocal =  async (req, res) => {
