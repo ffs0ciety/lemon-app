@@ -10,6 +10,7 @@ router.post('/usuario', middleware.ensureAuthenticated, usuariosCtrl.getUsuarioP
 //APLICAR MIDDLEWARE
 //router.put('/:id' , usuariosCtrl.editUsuario);
 //router.delete('/:id' , usuariosCtrl.deleteUsuario);
+router.put('/puntos', usuariosCtrl.agregarPuntos);
 
 //Menos al createUsuario y el validate(login)
 router.post('/' , usuariosCtrl.createUsuario);

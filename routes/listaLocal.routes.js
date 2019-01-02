@@ -7,6 +7,7 @@ const listaLocalCtrl = require('../controllers/listaLocal.controller');
 //router.get('/' , listaLocalCtrl.getListaLocal);
 router.post('/' , listaLocalCtrl.addListaLocal);
 router.post('/lista',middleware.ensureAuthenticated, listaLocalCtrl.getListaLocalId);
+router.put('/validar', middleware.ensureAuthenticated ,listaLocalCtrl.validarUsuario);
 // router.put('/:id' , listaLocalCtrl.editListaLocal);
 // router.delete('/:id' , listaLocalCtrl.deleteListaLocal);
 

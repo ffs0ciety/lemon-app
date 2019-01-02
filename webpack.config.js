@@ -24,6 +24,9 @@ module.exports = {
             }
         ]
     },
+    externals: {
+        jquery: 'jQuery'
+      },
     devServer: {
         historyApiFallback: true,
       }

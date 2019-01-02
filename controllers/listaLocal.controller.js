@@ -13,25 +13,32 @@ listaLocalCtrl.addListaLocal = async (req, res) => {
         res.json({'status': 'Es necesario estar registrado en la página'});
     }
     else {
-        const listaLocal = new ListaLocal({
-            nameLocal : req.body.nameLocal,
-            fecha : req.body.fecha,
-            idSala: req.body.idSala,
-            userName : req.body.userName,
-            age : req.body.age
-        });
+        const listaLocal = new ListaLocal( {
+            salaName: req.body.salaName,
+            salaId: req.body.salaId,
+            fecha: req.body.fecha,
+            userName: req.body.userName,
+            userId: req.body.userId,
+            userMail: req.body.userMail,
+            age: req.body.age
+        })
         await listaLocal.save();
+
         res.json({'status': 'Has sido añadido a la lista!'});
     }
    
 }
 
+listaLocalCtrl.validarUsuario = async (req, res) => {
+    console.log(req.body);
+    await ListaLocal.findByIdAndUpdate(req.body._id, {haEntrado: true});
+    res.json({'status':'Usuario validado'});
+}
+
 listaLocalCtrl.getListaLocalId = async (req, res) => {
-  
-    
     const usuario = new Usuarios(req.body);
     if(req.user.mail == usuario.mail){
-       const listaLocal = await ListaLocal.find({idSala:req.body.idSala});
+       const listaLocal = await ListaLocal.find({idSala:req.body.salaId});
        //const listaLocal = await ListaLocal.find({nameLocal:req.params.id});
        res.json(listaLocal);
     }

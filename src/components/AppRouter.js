@@ -61,7 +61,7 @@ class AppRouter extends React.Component {
             .then(res => res.json())
             .then(data => {
                 //COMPROBAR ESTA MONSERGA DEL ESTAdO EMPTY
-            console.log(data);
+            //console.log(data);
             if(data.status != "Token error"){
 
                 sessionStorage.setItem('idSala', data[0].idSala);

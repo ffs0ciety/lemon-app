@@ -68,4 +68,11 @@ usuariosCtrl.deleteUsuario = async (req, res) => {
     await Usuarios.findByIdAndRemove(req.params.id);
     res.json({'status': 'Usuario Removed'});
 }
+
+usuariosCtrl.agregarPuntos = async (req, res) => {
+    console.log(req.body);
+    
+    res.json({'status': 'Han sido agregado varios putnos al usuario'});
+}
+
 module.exports = usuariosCtrl;

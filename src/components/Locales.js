@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import './Locales.css'
+import DatePicker from "react-datepicker";
+// import { getDefaultLocale, registerLocale, setDefaultLocale } from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
 
+// import es from 'date-fns/locale/es';
+// registerLocale('es', es);
+// setDefaultLocale('es');
 
 
 class Locales extends Component {
@@ -12,50 +19,43 @@ class Locales extends Component {
       imgPrincipal: '',
       _id: '',
       infoLocal: ``,
+      fecha: new Date(),
       locales: [],      
     };
     
 
     this.dataSubmit = {
       _id:'',
-      nameLocal: '',
-      idSala:'',
+      salaName: '',
+      salaId:'',
       fecha: new Date().toJSON(),
       userName: '',
-      age: ''
+      userId: '',
+      userMail: '',
+      age: 20
     }
 
 
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.addLista = this.addLista.bind(this);
   }
 
-  handleChange(e) {
-    const { name, value } = e.target;
+  handleChange(date) {   
     this.setState({
-      [name]: value
-    });
+      fecha : date
+    })
+    this.dataSubmit.fecha = date.toJSON();
+        
   }
 
-
-  handleSubmit(e) {
-    event.preventDefault();
-    const { name, value } = e.target;
-    if(name == 'userName' ){
-      this.dataSubmit.userName = value;
-    }
-    else this.dataSubmit.age = value;
-    
-  }
 
   componentDidMount() {
     this.fetchLocales();
     this.dataSubmit.userName = sessionStorage.name;
-    this.dataSubmit.age = 20;
-    const event = new Date;
-    console.log(event);
+    this.dataSubmit.userId = sessionStorage.userId;
+    console.log(sessionStorage.mail);
+    this.dataSubmit.userMail = sessionStorage.mail;
   }
 
 
@@ -89,8 +89,8 @@ class Locales extends Component {
           _id: data._id
         });
     
-        this.dataSubmit.nameLocal = this.state.name;
-        this.dataSubmit.idSala = this.state._id;
+        this.dataSubmit.salaName = this.state.name;
+        this.dataSubmit.salaId = this.state._id;
         
       })   
   }
@@ -100,7 +100,6 @@ class Locales extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({locales: data});
-        console.log(this.state.locales);
       });
   }
 
@@ -133,18 +132,15 @@ class Locales extends Component {
   botonStyle(){
     var boton = document.getElementById("botonLocales");
     if(window.scrollY != 0){
-      console.log("Entra scroll 1");
-      boton.style.backgroundColor = "rgba(255, 255, 255, 0.4)";
+        //console.log("Entra scroll 1");
+        boton.style.backgroundColor = "rgba(255, 255, 255, 0.4)";
+    }
+    else {
+        // console.log("Entra scroll 2");
+        boton.style.backgroundColor = "rgba(255, 255, 255, 1)";
+    }
   }
-  else {
-      console.log("Entra scroll 2");
-      boton.style.backgroundColor = "rgba(255, 255, 255, 1)";
-  }
-  }
-  
-  
 
-  
   
   render() {
     
@@ -172,14 +168,15 @@ class Locales extends Component {
           {/* Main por defecto de las página de locales */}
           <div className="container">
                 <h2>Bienvenidos a esta monserga de aplicacion</h2>     
-                <p>Pincha en la frase de debajo para desplegar la lista de los locales.</p>
-                
+                <p>Pincha en la frase de debajo para desplegar la lista de los locales.</p>       
           </div>
          
       </div>      
       )
     }
     else {
+
+      
       return (    
         <div>
           <button id="botonLocales" type="button" className="btn botonLocales" onClick={() => this.openNav()}><i className="material-icons">reorder</i></button>
@@ -194,7 +191,7 @@ class Locales extends Component {
             this.state.locales.map(local => {
               return (
                 <p key={local._id} onClick={() => this.getLocal(local._id)}>
-                  {local.name}           
+                  {local.name}                             
                 </p>
               )
             })
@@ -206,7 +203,6 @@ class Locales extends Component {
               <h1 >{this.state.name}</h1>
               <button id="botonLista" type="button" className="btn botonLocales" onClick={() => this.openModal()}>Lista</button>
             </div>
-
             
           </div>
           {/* Inyectamos todo el info del local, que está guardado en formato html en la base de datos */}
@@ -226,10 +222,14 @@ class Locales extends Component {
                 </div>
                 <div className="modal-body">
                 <form>
-                  <label>
+                  {/* <label>
                     Dia de la semana "pruebas":
-                    <input type="text" name="none" onChange={this.handleSubmit}/>
-                  </label>   
+                    <input type="date" id="calendario" onChange={this.handleSubmit}/>
+                  </label>    */}
+                  <label>
+                    Selecciona el dia:
+                    <DatePicker selected={this.state.fecha} onChange={(e) => this.handleChange(e)}/>
+                   </label>
                 </form>
                 </div>
                 <div className="modal-footer">

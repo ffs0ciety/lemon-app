@@ -2,11 +2,14 @@ const mongoose =  require('mongoose');
 const {Schema} = mongoose;
 
 const listaLocalSchema = new Schema({
-    nameLocal: {type: String, required: true},
-    idSala: {type: String, required: true},
+    salaName: {type: String, required: true},
+    salaId: {type: String, required: true},
     fecha: {type: Date, required:true} ,
     userName: {type: String, required:true},
-    age: {type: Number, required:true}
+    userMail: {type: String, required:true},
+    userId: {type: String, required:true},
+    age: {type: Number, required:true},
+    haEntrado: {type: Boolean, default:false}
 });
 
 module.exports =  mongoose.model('ListaLocal', listaLocalSchema);
