@@ -8,7 +8,9 @@ class Login extends React.Component {
     this.state = {
       mail: '',
       name: '',
-      password: ''
+      password: '',
+      idSala: '',
+      puntos:''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,7 +23,7 @@ class Login extends React.Component {
 
   componentDidMount() {
 
-
+    this.getDatosPublicos();
     // this.comprobarToken();
   }
 
@@ -50,9 +52,6 @@ class Login extends React.Component {
       }
     })
     .catch(err => console.error(err));
-         
-          
-    
   }
   registrarCuenta(e){
     e.preventDefault();
@@ -79,6 +78,34 @@ class Login extends React.Component {
     } else alert("Falta algún campo por rellenar");
   }
 
+  getDatosPublicos(){
+    console.log(sessionStorage.mail);
+    if(sessionStorage.mail != undefined && sessionStorage.token != undefined){
+      fetch('/api/usuarios/usuario',{
+        method: 'POST',
+        body: JSON.stringify({mail:sessionStorage.mail, token:sessionStorage.token}),
+        headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.token
+              }
+          })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data[0].puntos.toString());
+          this.setState({
+            mail:  data[0].mail,
+            name: data[0].name,
+            idSala: data[0].idSala,
+            puntos: data[0].puntos.toString()
+          })
+          console.log(this.state);
+        })
+        .catch(err => console.error(err));
+    }
+   
+  }
+
 
   handleChange(e) {
     const { name, value } = e.target;
@@ -101,8 +128,9 @@ render() {
     return (
       <div id="cuerpo">
         <div className="container">
-            <h2>Usuario <b>{sessionStorage.mail}</b> loggeado</h2>
-
+            <h2>Usuario <b>{sessionStorage.name}</b> loggeado</h2>
+            <p>Mail: <b>{this.state.mail}</b></p>
+            <p>Puntos: <b>{this.state.puntos}</b></p>
             <button className="btn btn-outline-primary" onClick={this.cerrarSesion}>Cerrar sesion</button>
         </div>
       </div>

@@ -7,7 +7,7 @@ const usuariosCtrl = require('../controllers/usuarios.controller');
 //router.get('/' , usuariosCtrl.getUsuarios);
 router.post('/usuario', middleware.ensureAuthenticated, usuariosCtrl.getUsuarioPublic);
 
-//APLICAR MIDDLEWARE
+//APLICAR MIDDLEWARE Y COMPROBAR QUE SEA PROPIETARIO DE LA LISTA
 //router.put('/:id' , usuariosCtrl.editUsuario);
 //router.delete('/:id' , usuariosCtrl.deleteUsuario);
 router.put('/puntos', usuariosCtrl.agregarPuntos);

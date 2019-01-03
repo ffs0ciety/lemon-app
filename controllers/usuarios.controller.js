@@ -20,17 +20,17 @@ usuariosCtrl.getUsuarios = async (req, res) => {
 }
 
 usuariosCtrl.getUsuarioPublic = async (req, res) => {
+
     const usuario = new Usuarios(req.body);
     //COMPROBAMOS QUE LOS DATOS DEL TOKEN COINCIDAN CON EL BODY
     if(req.user.mail == usuario.mail){
-       const salida = await Usuarios.find({mail:usuario.mail},{password:0});
-       res.json(salida);
+        const salida = await Usuarios.find({mail:usuario.mail},{password:0});
+        res.json(salida);
     }
     else {
-        const salida = {status:"Token error"}
+        const salida = {status:"Token error"};
         res.json(salida);
     };
-
 }
 
 usuariosCtrl.createUsuario = async (req, res) => {
@@ -71,8 +71,14 @@ usuariosCtrl.deleteUsuario = async (req, res) => {
 
 usuariosCtrl.agregarPuntos = async (req, res) => {
     console.log(req.body);
-    
-    res.json({'status': 'Han sido agregado varios putnos al usuario'});
+    if(req.body.haEntrado != true){
+        const usuario = await Usuarios.findById(req.body.userId)
+        console.log(usuario);
+        await Usuarios.findByIdAndUpdate(req.body.userId, {puntos: usuario.puntos + req.body.puntos});
+        res.json({'status': 'Han sido agregado varios puntos al usuario'});
+    }
+    else res.json({'status': 'Usuario ya validado'});
+   
 }
 
 module.exports = usuariosCtrl;

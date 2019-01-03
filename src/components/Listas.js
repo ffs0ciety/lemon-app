@@ -49,8 +49,27 @@ class Listas extends React.Component {
       })
   }
 
+  agregarPuntos(e){
+    console.log(e);
+    const puntos = 10;
+    fetch(`/api/usuarios/puntos`,{
+      method: 'PUT',
+      body: JSON.stringify({userId:e.userId, puntos: puntos, haEntrado:e.haEntrado}),
+      headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + sessionStorage.token
+            }
+        
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
+  }
+
   validarUsuario(e){
-      console.log(e);
+      
       fetch(`/api/listaLocal/validar`,{
         method: 'PUT',
         body: JSON.stringify({_id:e._id}),
@@ -110,7 +129,7 @@ render() {
                 <td id='icono'>
                   <p dangerouslySetInnerHTML={{__html: haEntrado}}></p>
                 </td>
-                <td><button className="btn" onClick={() => this.validarUsuario(persona)}><i className="material-icons">assignment</i></button></td>
+                <td><button className="btn" onClick={() => {this.validarUsuario(persona), this.agregarPuntos(persona)}}><i className="material-icons">assignment</i></button></td>
               </tr> 
             )
           })
