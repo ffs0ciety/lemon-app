@@ -7,6 +7,9 @@ class Listas extends React.Component {
     super();
 
     this.state = {
+      filtro: '',
+      filtroMail: '',
+      filtroFecha: '',
       lista: []    
     };
 
@@ -19,9 +22,11 @@ class Listas extends React.Component {
     this.setState({
       [name]: value
     });
+    // console.log(this.state);
   }
 
   componentDidMount() {
+    // this.test();
     this.getListaLocal();
   }
 
@@ -41,7 +46,7 @@ class Listas extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState({
           lista:data
         })     
@@ -50,7 +55,7 @@ class Listas extends React.Component {
   }
 
   agregarPuntos(e){
-    console.log(e);
+    // console.log(e);
     const puntos = 10;
     fetch(`/api/usuarios/puntos`,{
       method: 'PUT',
@@ -66,6 +71,16 @@ class Listas extends React.Component {
       .then(data => {
         console.log(data);
       })
+  }
+  
+  test(){
+    var strings = ["hello", "1", "bye"];
+    var filtered = strings.filter(function (str) {
+      return str.includes('e');
+    })
+    var filtered2 = strings.filter( str => str.includes(''))
+    console.log(filtered2);
+    console.log(filtered);
   }
 
   validarUsuario(e){
@@ -88,11 +103,37 @@ class Listas extends React.Component {
   }
 
 
+
+
+  
+
 render() {
   if(this.state.test != "Error"){
+    var salida = this.state.lista
+    .filter(filtroName => 
+      filtroName.userName.toLowerCase().includes(this.state.filtro)
+     // filtroMail.userMail.toLowerCase().includes(this.state.filtroMail) 
+      )
+    .filter(filtroMail =>
+        filtroMail.userMail.toLowerCase().includes(this.state.filtroMail)
+      )
+    // console.log(salida);
 
     return (
       <div id="cuerpo" className="container">
+      <div className="row">
+        <div className="col">
+          <input type="text" name="filtro" placeholder="Filtrar por nombre..." onChange={this.handleChange}></input>
+        </div>
+        <div className="col">
+          <input type="text" name="filtroMail" placeholder="Filtrar por mail..." onChange={this.handleChange}></input>
+        </div>
+        {/* <div className="col">
+          <input type="text" name="filtro" placeholder="Filtrar por fecha..." onChange={this.handleChange}></input>
+        </div> */}
+      </div>
+      
+      {/* <p onChange={this.handleChange}>{this.state.filtro}</p> */}
       <table className="table">
         <thead>
         <tr>
@@ -106,8 +147,9 @@ render() {
         </tr>
         </thead>
         <tbody>
+          
         { 
-          this.state.lista.map(persona => {
+        salida.map(persona => {
             var haEntrado = `<i class="material-icons">clear</i>`;
             if(persona.haEntrado == true){
               haEntrado = `<i class="material-icons">done</i>`;
