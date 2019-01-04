@@ -1,19 +1,23 @@
 import React from 'react';
 import './Listas.css'
 import Error from './Error';
+import moment from 'moment';
+import DatePicker from "react-datepicker";
 
 class Listas extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      filtro: '',
+      filtroName: '',
       filtroMail: '',
       filtroFecha: '',
       lista: []    
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleDate = this.handleDate.bind(this);
+    this.limpiaFecha = this.limpiaFecha.bind(this);
 
   }
 
@@ -25,8 +29,14 @@ class Listas extends React.Component {
     // console.log(this.state);
   }
 
+  handleDate(date) {
+    this.setState({
+      filtroFecha : date
+    })
+    
+  }
+
   componentDidMount() {
-    // this.test();
     this.getListaLocal();
   }
 
@@ -50,7 +60,7 @@ class Listas extends React.Component {
         this.setState({
           lista:data
         })     
-        
+        this.test();
       })
   }
 
@@ -73,13 +83,26 @@ class Listas extends React.Component {
   }
   
   test(){
-    var strings = ["hello", "1", "bye"];
-    var filtered = strings.filter(function (str) {
-      return str.includes('e');
-    })
-    var filtered2 = strings.filter( str => str.includes(''))
-    console.log(filtered2);
-    console.log(filtered);
+  
+    var testFecha = this.state.lista
+    
+    
+    var uniq = this.state.lista[0].fecha;
+    var date = moment(uniq).format('DD-MM-YYYY');
+    
+    console.log(uniq);
+    
+    console.log(date);
+
+    console.log(this.state.filtroFecha == '');
+
+    // var filt = testFecha.filter( data => data.fecha.includes(uniq));
+    // console.log(filt);
+    // .filter(filtroMail =>
+    //   filtroMail.userMail.toLowerCase().includes(this.state.filtroMail.toLowerCase())
+    // )
+    // console.log(filtered2);
+    // console.log(filtered);
   }
 
   validarUsuario(e){
@@ -102,34 +125,60 @@ class Listas extends React.Component {
   }
 
 
-
+  limpiaFecha(){
+    this.setState({
+      filtroFecha : ''
+    })
+  }
 
   
 
 render() {
   if(this.state.test != "Error"){
-    var salida = this.state.lista
-    .filter(filtroName => 
-      filtroName.userName.toLowerCase().includes(this.state.filtro.toLocaleLowerCase())
-      )
-    .filter(filtroMail =>
-        filtroMail.userMail.toLowerCase().includes(this.state.filtroMail.toLowerCase())
-      )
+    var salida
+    if(this.state.filtroFecha == ''){
+      var salida = this.state.lista
+        .filter(filtroName => 
+          filtroName.userName.toLowerCase().includes(this.state.filtroName.toLocaleLowerCase())
+          )
+        .filter(filtroMail =>
+            filtroMail.userMail.toLowerCase().includes(this.state.filtroMail.toLowerCase())
+        )
+    }
+    else {salida = this.state.lista
+        .filter(filtroName => 
+          filtroName.userName.toLowerCase().includes(this.state.filtroName.toLocaleLowerCase())
+          )
+        .filter(filtroMail =>
+            filtroMail.userMail.toLowerCase().includes(this.state.filtroMail.toLowerCase())
+          )
+        .filter(data =>
+          moment(data.fecha).format('DD-MM-YYYY').includes(moment(this.state.filtroFecha).format('DD-MM-YYYY')))
+    }
 
     return (
       <div id="cuerpo" className="container">
       <div className="row">
-        <div className="col">
-          <input type="text" name="filtro" placeholder="Filtrar por nombre..." onChange={this.handleChange}></input>
+        <div className="col-3">
+          <label>Filtrar nombre</label>
+          <input class="form-control" type="text" name="filtroName" onChange={this.handleChange}></input>
         </div>
-        <div className="col">
-          <input type="text" name="filtroMail" placeholder="Filtrar por mail..." onChange={this.handleChange}></input>
+        <div className="col-2">
+          <label>Filtrar email</label>
+          <input class="form-control" type="text" name="filtroMail" onChange={this.handleChange}></input>
         </div>
-        {/* <div className="col">
-          <input type="text" name="filtro" placeholder="Filtrar por fecha..." onChange={this.handleChange}></input>
-        </div> */}
+        <div className="col-4">
+          {/* <input type="text" name="filtroFecha" placeholder="Filtrar por fecha..." onChange={this.handleChange}></input> */}
+            <label>Filtrar por fecha</label>
+            <DatePicker placeholder="Filtrar por fecha" class="form-control" name="filtroFecha" selected={this.state.filtroFecha} onSelect={(e) => this.handleDate(e)}/> 
+        </div>
+        <div className="col-3" onClick={this.limpiaFecha}>
+          <label>Limpiar fecha</label>
+          <br></br>
+          <button type="button" className="btn btn-dark">x</button>
+        </div>
       </div>
-      
+      <br></br>
       {/* <p onChange={this.handleChange}>{this.state.filtro}</p> */}
       <table className="table">
         <thead>
@@ -163,7 +212,8 @@ render() {
                   {persona.age}          
                 </td>
                 <td>
-                  {persona.fecha}          
+                 {moment(persona.fecha).format('DD-MM-YYYY')}
+                  {/* {persona.fecha}           */}
                 </td>
                 <td id='icono'>
                   <p dangerouslySetInnerHTML={{__html: haEntrado}}></p>
