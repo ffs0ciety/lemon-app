@@ -69,7 +69,6 @@ class Listas extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
       })
   }
   
@@ -111,13 +110,11 @@ render() {
   if(this.state.test != "Error"){
     var salida = this.state.lista
     .filter(filtroName => 
-      filtroName.userName.toLowerCase().includes(this.state.filtro)
-     // filtroMail.userMail.toLowerCase().includes(this.state.filtroMail) 
+      filtroName.userName.toLowerCase().includes(this.state.filtro.toLocaleLowerCase())
       )
     .filter(filtroMail =>
-        filtroMail.userMail.toLowerCase().includes(this.state.filtroMail)
+        filtroMail.userMail.toLowerCase().includes(this.state.filtroMail.toLowerCase())
       )
-    // console.log(salida);
 
     return (
       <div id="cuerpo" className="container">

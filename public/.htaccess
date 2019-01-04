@@ -1,0 +1,6 @@
+RewriteEngine On 
+RewriteBase /
+ 
+RewriteCond %{SERVER_PORT} 80
+ 
+RewriteRule ^(.*)$ https://www.lemonapp.es/$1 [R,L]

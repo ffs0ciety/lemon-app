@@ -15,12 +15,14 @@ class Locales extends Component {
   constructor() {
     super();
     this.state = {
+      
       name: '',
       imgPrincipal: '',
       _id: '',
       infoLocal: ``,
       fecha: new Date(),
-      locales: [],      
+      locales: [],   
+      filtroLocales : ''   
     };
     
 
@@ -38,15 +40,21 @@ class Locales extends Component {
 
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleDate = this.handleDate.bind(this);
     this.addLista = this.addLista.bind(this);
   }
 
-  handleChange(date) {   
+  handleChange(e) {   
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    }); 
+  }
+  handleDate(date) {
     this.setState({
       fecha : date
     })
     this.dataSubmit.fecha = date.toJSON();
-        
   }
 
 
@@ -143,7 +151,10 @@ class Locales extends Component {
 
   
   render() {
-    
+    var salida = this.state.locales
+    .filter(data => 
+       data.name.toLowerCase().includes(this.state.filtroLocales.toLowerCase()))
+
     if(this.state._id == ""){
       return (    
         <div id="cuerpo">
@@ -152,15 +163,17 @@ class Locales extends Component {
           <div id="mySidenav" className="lateralNav" >
           <a  className="closebtn" onClick={() => this.closeNav()}>&times;</a>    
           <div className="container">
-          <input type="text" placeholder="Filtrar..."></input>     
+          <input type="text" name="filtroLocales" placeholder="Filtrar..." onChange={this.handleChange}></input>     
           </div>  
           
           {
-            this.state.locales.map(local => {
+            salida.map(local => {
               return (
-                <p key={local._id} onClick={() => this.getLocal(local._id)}>
-                  {local.name}           
+                <div key={local._id}  onClick={() => this.closeNav()}>
+                <p onClick={() => this.getLocal(local._id)}>
+                  {local.name}                             
                 </p>
+              </div>
               )             
             })
           }      
@@ -181,18 +194,20 @@ class Locales extends Component {
         <div>
           <button id="botonLocales" type="button" className="btn botonLocales" onClick={() => this.openNav()}><i className="material-icons">reorder</i></button>
           
-          {this.closeNav()}
+          
           <div id="mySidenav" className="lateralNav" >
           <a  className="closebtn" onClick={() => this.closeNav()}>&times;</a>    
           <div className="container">
-          <input type="text" placeholder="Filtrar..."></input>     
+          <input type="text" name="filtroLocales" placeholder="Filtrar..." onChange={this.handleChange}></input>     
           </div>  
           { 
-            this.state.locales.map(local => {
+            salida.map(local => {
               return (
-                <p key={local._id} onClick={() => this.getLocal(local._id)}>
-                  {local.name}                             
-                </p>
+                <div key={local._id} onClick={() => this.closeNav()}>
+                  <p onClick={() => this.getLocal(local._id)}>
+                    {local.name}                             
+                  </p>
+                </div>
               )
             })
           }      
@@ -228,7 +243,7 @@ class Locales extends Component {
                   </label>    */}
                   <label>
                     Selecciona el dia:
-                    <DatePicker selected={this.state.fecha} onChange={(e) => this.handleChange(e)}/>
+                    <DatePicker selected={this.state.fecha} onChange={(e) => this.handleDate(e)}/>
                    </label>
                 </form>
                 </div>
